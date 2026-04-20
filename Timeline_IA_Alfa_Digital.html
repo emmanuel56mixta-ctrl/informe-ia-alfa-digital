@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estrategia de IA para Docentes · Línea Temporal · Alfa Digital SEJ</title>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://api.fontshare.com/v2/css?f[]=garet@300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --wine:#E6005A;
+  --wine-dark:#B80048;
+  --orange:#F28C28;
+  --orange-soft:#F7B267;
+  --blue:#2E4A6B;
+  --blue-light:#D5E0EC;
+  --lavender:#E8E6F5;
+  --gray-1:#FAFAFA;
+  --gray-2:#F2F2F2;
+  --gray-text:#333333;
+  --gray-med:#666666;
+  --white:#FFFFFF;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{scroll-behavior:smooth}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
+  background:linear-gradient(180deg,#FFFFFF 0%,#FDF7F4 100%);
+  color:var(--gray-text);
+  line-height:1.5;
+  overflow-x:hidden;
+}
+
+/* === HERO === */
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  background:radial-gradient(ellipse at top,#FFF5EE 0%,#FFFFFF 70%);
+  overflow:hidden;
+}
+.hero::before{
+  content:"";
+  position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(230,0,90,0.08) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(242,140,40,0.08) 0%, transparent 40%);
+}
+.hero-content{
+  text-align:center;
+  max-width:900px;
+  padding:2rem;
+  position:relative;
+  z-index:1;
+}
+.hero-eyebrow{
+  font-size:.85rem;
+  letter-spacing:.35em;
+  color:var(--orange);
+  font-weight:700;
+  text-transform:uppercase;
+  margin-bottom:1.5rem;
+  opacity:0;
+  animation:fadeUp .8s .2s forwards;
+}
+.hero-title{
+  font-size:clamp(2.5rem,6vw,5.5rem);
+  font-weight:800;
+  color:var(--wine);
+  line-height:1.05;
+  letter-spacing:-.02em;
+  margin-bottom:1rem;
+  opacity:0;
+  animation:fadeUp 1s .4s forwards;
+}
+.hero-subtitle{
+  font-size:clamp(1.1rem,2.2vw,1.6rem);
+  color:var(--blue);
+  font-style:italic;
+  font-weight:300;
+  margin-bottom:2rem;
+  opacity:0;
+  animation:fadeUp 1s .7s forwards;
+}
+.hero-meta{
+  display:flex;
+  gap:2rem;
+  justify-content:center;
+  flex-wrap:wrap;
+  font-size:.95rem;
+  color:var(--gray-med);
+  opacity:0;
+  animation:fadeUp 1s 1s forwards;
+}
+.hero-meta span{position:relative}
+.hero-meta span:not(:last-child)::after{
+  content:"·";
+  margin-left:2rem;
+  color:var(--orange);
+  font-weight:700;
+}
+.scroll-indicator{
+  position:absolute;
+  bottom:2rem;
+  left:50%;
+  transform:translateX(-50%);
+  color:var(--wine);
+  font-size:.8rem;
+  letter-spacing:.3em;
+  text-transform:uppercase;
+  animation:bounce 2s infinite;
+  opacity:0;
+  animation:fadeIn 1s 1.5s forwards,bounce 2s 2.5s infinite;
+}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes bounce{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,10px)}}
+
+/* === INTRO BLOCK === */
+.intro{
+  padding:6rem 2rem;
+  max-width:900px;
+  margin:0 auto;
+  text-align:center;
+}
+.intro-quote{
+  font-size:clamp(1.3rem,2.6vw,2rem);
+  color:var(--wine);
+  font-weight:600;
+  font-style:italic;
+  line-height:1.35;
+  padding:2rem;
+  border-left:5px solid var(--orange);
+  background:linear-gradient(90deg,rgba(242,140,40,0.05),transparent);
+  text-align:left;
+}
+
+/* === TIMELINE === */
+.timeline-section{
+  padding:4rem 1rem 6rem;
+  position:relative;
+}
+.timeline-header{
+  text-align:center;
+  margin-bottom:4rem;
+}
+.timeline-year{
+  display:inline-block;
+  font-size:clamp(4rem,10vw,8rem);
+  font-weight:800;
+  color:transparent;
+  -webkit-text-stroke:2px var(--wine);
+  letter-spacing:.05em;
+  line-height:1;
+}
+.timeline-year.filled{
+  color:var(--wine);
+  -webkit-text-stroke:0;
+}
+.timeline-stage-title{
+  font-size:clamp(1.2rem,2.4vw,1.8rem);
+  color:var(--blue);
+  font-weight:600;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  margin-top:.5rem;
+}
+.timeline-container{
+  max-width:1400px;
+  margin:0 auto;
+  position:relative;
+}
+
+/* Central trunk */
+.trunk{
+  position:absolute;
+  left:50%;
+  top:0;
+  bottom:0;
+  width:6px;
+  background:linear-gradient(180deg,var(--wine) 0%,var(--orange) 100%);
+  transform:translateX(-50%);
+  border-radius:3px;
+  z-index:0;
+}
+
+/* Node (milestone on trunk) */
+.node{
+  position:relative;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:3rem auto;
+  z-index:2;
+}
+.node-circle{
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  background:var(--wine);
+  color:var(--white);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  font-size:1.3rem;
+  box-shadow:0 10px 25px rgba(230,0,90,0.3),0 0 0 6px rgba(230,0,90,0.12);
+  transition:all .6s ease;
+}
+.node-circle.orange{background:var(--orange);box-shadow:0 10px 25px rgba(242,140,40,0.3),0 0 0 6px rgba(242,140,40,0.15)}
+.node-circle.blue{background:var(--blue);box-shadow:0 10px 25px rgba(46,74,107,0.3),0 0 0 6px rgba(46,74,107,0.15)}
+.node.huge .node-circle{
+  width:140px;height:140px;font-size:1rem;text-align:center;line-height:1.2;
+  background:linear-gradient(135deg,var(--wine),var(--wine-dark));
+  box-shadow:0 15px 40px rgba(230,0,90,.4),0 0 0 10px rgba(230,0,90,.1);
+}
+
+/* Branch container */
+.branches{
+  position:relative;
+  padding:2rem 0;
+}
+
+/* A branch row: SVG line on the side + card */
+.branch{
+  display:grid;
+  grid-template-columns:1fr 120px 1fr;
+  align-items:center;
+  margin:2rem 0;
+  position:relative;
+}
+.branch .spacer{display:block}
+.branch .card{
+  background:var(--white);
+  border-radius:18px;
+  padding:1.8rem;
+  box-shadow:0 8px 30px rgba(0,0,0,0.06);
+  border:1px solid rgba(0,0,0,0.04);
+  position:relative;
+  transition:all .6s ease;
+  opacity:0;
+  transform:translateY(20px);
+}
+.branch.visible .card{opacity:1;transform:translateY(0)}
+.branch .card::before{
+  content:"";
+  position:absolute;
+  top:50%;
+  width:60px;
+  height:3px;
+  background:linear-gradient(90deg,var(--orange),var(--wine));
+  transform:translateY(-50%);
+  border-radius:3px;
+  transition:width .8s ease;
+  opacity:0;
+}
+.branch.visible .card::before{opacity:1}
+.branch.left .card::before{right:-60px}
+.branch.right .card::before{left:-60px}
+.branch.left .card{grid-column:1}
+.branch.right .card{grid-column:3}
+
+/* Line marker circle on the trunk for each branch */
+.branch-dot{
+  grid-column:2;
+  justify-self:center;
+  width:20px;height:20px;
+  border-radius:50%;
+  background:var(--white);
+  border:4px solid var(--wine);
+  box-shadow:0 0 0 6px var(--white);
+  z-index:3;
+  transition:all .4s ease;
+}
+.branch.visible .branch-dot{transform:scale(1.15);border-color:var(--orange)}
+
+/* Card content */
+.card-label{
+  font-size:.75rem;
+  letter-spacing:.3em;
+  color:var(--orange);
+  font-weight:700;
+  text-transform:uppercase;
+  margin-bottom:.4rem;
+}
+.card-title{
+  font-size:1.35rem;
+  font-weight:700;
+  color:var(--wine);
+  margin-bottom:.5rem;
+  line-height:1.2;
+}
+.card-desc{
+  color:var(--gray-text);
+  font-size:.95rem;
+  margin-bottom:1rem;
+}
+.card-stats{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.75rem;
+  margin-top:1rem;
+}
+.stat{
+  background:var(--lavender);
+  padding:.6rem 1rem;
+  border-radius:10px;
+  text-align:center;
+  min-width:100px;
+  border:1px solid rgba(46,74,107,0.1);
+}
+.stat .stat-num{
+  font-size:1.4rem;
+  font-weight:800;
+  color:var(--wine);
+  line-height:1;
+}
+.stat .stat-num.orange{color:var(--orange)}
+.stat .stat-label{
+  font-size:.7rem;
+  color:var(--blue);
+  letter-spacing:.05em;
+  margin-top:.25rem;
+  display:block;
+}
+
+/* Sub-branches within a card */
+.sub-branches{
+  margin-top:1rem;
+  padding-left:1rem;
+  border-left:2px dashed var(--orange-soft);
+}
+.sub-branch{
+  padding:.5rem 0;
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  font-size:.9rem;
+  color:var(--gray-text);
+}
+.sub-branch strong{color:var(--wine);font-weight:600}
+.sub-branch .sub-num{
+  font-weight:800;
+  color:var(--orange);
+  font-size:1rem;
+  white-space:nowrap;
+}
+
+/* === IMPACT BLOCK === */
+.impact-block{
+  max-width:1100px;
+  margin:5rem auto;
+  background:linear-gradient(135deg,var(--wine),var(--wine-dark));
+  border-radius:30px;
+  padding:4rem 2rem;
+  text-align:center;
+  color:var(--white);
+  box-shadow:0 25px 60px rgba(230,0,90,0.3);
+  position:relative;
+  overflow:hidden;
+}
+.impact-block::before,.impact-block::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+}
+.impact-block::before{
+  width:300px;height:300px;
+  background:rgba(242,140,40,0.15);
+  top:-100px;right:-100px;
+}
+.impact-block::after{
+  width:200px;height:200px;
+  background:rgba(255,255,255,0.08);
+  bottom:-70px;left:-70px;
+}
+.impact-eyebrow{
+  position:relative;z-index:1;
+  font-size:.9rem;
+  letter-spacing:.4em;
+  opacity:.8;
+  text-transform:uppercase;
+  margin-bottom:1rem;
+}
+.impact-big{
+  position:relative;z-index:1;
+  font-size:clamp(4rem,12vw,9rem);
+  font-weight:800;
+  line-height:1;
+  margin:1rem 0;
+  text-shadow:0 4px 20px rgba(0,0,0,0.2);
+}
+.impact-label{
+  position:relative;z-index:1;
+  font-size:1.2rem;
+  opacity:.95;
+  max-width:600px;
+  margin:0 auto 2rem;
+}
+.impact-grid{
+  position:relative;z-index:1;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:1rem;
+  max-width:900px;
+  margin:2rem auto 0;
+}
+.impact-grid .cell{
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(10px);
+  border-radius:14px;
+  padding:1.2rem .8rem;
+  border:1px solid rgba(255,255,255,0.2);
+}
+.impact-grid .cell .n{
+  font-size:2.2rem;
+  font-weight:800;
+  color:var(--orange-soft);
+  line-height:1;
+}
+.impact-grid .cell .l{
+  font-size:.8rem;
+  opacity:.9;
+  margin-top:.4rem;
+  line-height:1.3;
+}
+
+/* === DIVIDER SECTION === */
+.bridge{
+  text-align:center;
+  padding:4rem 1rem 1rem;
+}
+.bridge-arrow{
+  font-size:3rem;
+  color:var(--orange);
+  animation:pulse 2s infinite;
+}
+.bridge-text{
+  font-size:clamp(1.3rem,2.6vw,1.8rem);
+  color:var(--blue);
+  font-style:italic;
+  font-weight:500;
+  margin-top:1rem;
+  max-width:700px;
+  margin-left:auto;margin-right:auto;
+}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.15);opacity:1}}
+
+/* === 2026 STAGE === */
+.stage-2026{
+  background:linear-gradient(180deg,#FFF5EE,#FFFFFF);
+  padding:4rem 1rem 6rem;
+}
+
+/* Closing */
+.closing{
+  max-width:900px;
+  margin:4rem auto 6rem;
+  padding:3rem;
+  text-align:center;
+}
+.closing-quote{
+  font-size:clamp(1.3rem,2.8vw,1.9rem);
+  color:var(--wine);
+  font-weight:600;
+  font-style:italic;
+  line-height:1.35;
+  padding:2rem;
+  border-top:4px solid var(--orange);
+  border-bottom:4px solid var(--orange);
+  margin-bottom:2rem;
+}
+.closing-signature{
+  color:var(--gray-med);
+  font-size:.95rem;
+  line-height:1.8;
+}
+.closing-signature strong{color:var(--wine);font-size:1.1rem;display:block;margin-bottom:.25rem}
+
+/* === RESPONSIVE === */
+@media(max-width:860px){
+  .trunk{left:30px;transform:none}
+  .branch{grid-template-columns:60px 1fr}
+  .branch .spacer{display:none}
+  .branch-dot{grid-column:1;justify-self:start;margin-left:20px}
+  .branch.left .card,.branch.right .card{grid-column:2}
+  .branch.left .card::before,.branch.right .card::before{
+    left:-30px;right:auto;width:30px
+  }
+  .node .node-circle{margin-left:-10px}
+}
+
+/* === KEY ARROW DOWN === */
+.trunk-arrow{
+  display:flex;
+  justify-content:center;
+  margin:-1rem 0 -1rem;
+  position:relative;
+  z-index:2;
+}
+.trunk-arrow svg{
+  width:30px;height:30px;
+  fill:var(--orange);
+  animation:pulse 2s infinite;
+}
+
+/* Floating watermark */
+.watermark{
+  position:fixed;
+  bottom:1rem;right:1rem;
+  font-size:.7rem;
+  color:var(--gray-med);
+  opacity:.6;
+  z-index:100;
+  letter-spacing:.1em;
+  pointer-events:none;
+}
+
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow">Informe 2025 · Proyección 2026</div>
+    <h1 class="hero-title">Inteligencia Artificial<br>para docentes</h1>
+    <p class="hero-subtitle">Del esfuerzo puntual a la estrategia estatal</p>
+    <div class="hero-meta">
+      <span>Dirección de Alfabetización Digital</span>
+      <span>Secretaría de Educación Jalisco</span>
+    </div>
+  </div>
+  <div class="scroll-indicator">↓ Recorre la ruta</div>
+</section>
+
+<!-- INTRO -->
+<section class="intro">
+  <div class="intro-quote">
+    «2025 marcó un cambio de escala: de acciones puntuales de capacitación a una estrategia estatal estructurada con múltiples canales, audiencias y formatos.»
+  </div>
+</section>
+
+<!-- ========== STAGE 2025 ========== -->
+<section class="timeline-section">
+  <div class="timeline-header">
+    <div class="timeline-year filled">2025</div>
+    <div class="timeline-stage-title">Construir colectiva y creativamente</div>
+  </div>
+
+  <div class="timeline-container">
+    <div class="trunk"></div>
+
+    <!-- Origin node -->
+    <div class="node visible">
+      <div class="node-circle orange">INICIO</div>
+    </div>
+
+    <!-- Branch 1 -->
+    <div class="branch left" data-reveal>
+      <div class="card">
+        <div class="card-label">Línea 01</div>
+        <div class="card-title">Estrategia de capacitación virtual sincrónica SEJ</div>
+        <div class="card-desc">Marco operativo que articula la formación en vivo a través del canal oficial de YouTube de la SEJ, con <strong>Aula Digital Jalisco</strong> como espacio de producción y transmisión.</div>
+      </div>
+      <div class="branch-dot"></div>
+      <div class="spacer"></div>
+    </div>
+
+    <!-- Branch 2 -->
+    <div class="branch right" data-reveal>
+      <div class="spacer"></div>
+      <div class="branch-dot"></div>
+      <div class="card">
+        <div class="card-label">Línea 02</div>
+        <div class="card-title">Series formativas especializadas</div>
+        <div class="card-desc">Rutas de aprendizaje diseñadas por nivel de profundidad, desde la alfabetización básica hasta el uso pedagógico avanzado de la IA.</div>
+        <div class="sub-branches">
+          <div class="sub-branch"><span><strong>Aula Digital paso a paso</strong> · 2 temporadas · 32 videos</span><span class="sub-num">30,354</span></div>
+          <div class="sub-branch"><span><strong>Lleva la IA a tu salón</strong> · 29 videos</span><span class="sub-num">45,740</span></div>
+          <div class="sub-branch"><span><strong>Jalisco Aprende con IA</strong> · 4 videos</span><span class="sub-num">2,608</span></div>
+          <div class="sub-branch"><span><strong>3 Webinars avanzados</strong> · ChatGPT / NotebookLM</span><span class="sub-num">8,500</span></div>
+        </div>
+        <div class="card-stats">
+          <div class="stat"><div class="stat-num">68</div><span class="stat-label">Videos totales</span></div>
+          <div class="stat"><div class="stat-num orange">87,202</div><span class="stat-label">Vistas agregadas</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Branch 3 -->
+    <div class="branch left" data-reveal>
+      <div class="card">
+        <div class="card-label">Línea 03</div>
+        <div class="card-title">Cursos autogestivos</div>
+        <div class="card-desc">Rutas a demanda en YouTube, para que cada docente avance a su propio ritmo en el ámbito de la autonomía responsable.</div>
+        <div class="sub-branches">
+          <div class="sub-branch"><span><strong>Curso de Gemini</strong> · 5 videos</span><span class="sub-num">1,762</span></div>
+          <div class="sub-branch"><span><strong>Curso Intensivo Workspace · Certificación Nivel 1</strong> · 6 videos</span><span class="sub-num">18,500</span></div>
+        </div>
+        <div class="card-stats">
+          <div class="stat"><div class="stat-num orange">250</div><span class="stat-label">Simuladores aprobados</span></div>
+          <div class="stat"><div class="stat-num">11</div><span class="stat-label">Videos autogestivos</span></div>
+        </div>
+      </div>
+      <div class="branch-dot"></div>
+      <div class="spacer"></div>
+    </div>
+
+    <!-- Branch 4 -->
+    <div class="branch right" data-reveal>
+      <div class="spacer"></div>
+      <div class="branch-dot"></div>
+      <div class="card">
+        <div class="card-label">Línea 04</div>
+        <div class="card-title">Tips en un click</div>
+        <div class="card-desc">Serie de 30 reels con consejos breves y prácticos sobre el uso de Chromebook y habilidades digitales, pensados para multiplicarse en redes sociales.</div>
+        <div class="card-stats">
+          <div class="stat"><div class="stat-num orange">30</div><span class="stat-label">Reels producidos</span></div>
+          <div class="stat"><div class="stat-num">Nuevo</div><span class="stat-label">Formato micro</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Branch 5 -->
+    <div class="branch left" data-reveal>
+      <div class="card">
+        <div class="card-label">Línea 05</div>
+        <div class="card-title">Capacitación presencial</div>
+        <div class="card-desc">El corazón de la estrategia: contacto directo con la comunidad educativa, práctica guiada y aprendizajes situados.</div>
+        <div class="sub-branches">
+          <div class="sub-branch"><span><strong>En instalaciones de Alfa Digital</strong></span><span class="sub-num">6,749</span></div>
+          <div class="sub-branch"><span><strong>En las escuelas</strong> · Secundarias · Normales · OPD · Conalep</span><span class="sub-num">32</span></div>
+          <div class="sub-branch"><span><strong>En municipios</strong> · Cd. Guzmán · Atotonilco · Ayutlán · Ocotlán</span><span class="sub-num">4</span></div>
+        </div>
+        <div class="card-stats">
+          <div class="stat"><div class="stat-num orange">6,749</div><span class="stat-label">Docentes capacitados</span></div>
+        </div>
+      </div>
+      <div class="branch-dot"></div>
+      <div class="spacer"></div>
+    </div>
+
+    <!-- Branch 6 -->
+    <div class="branch right" data-reveal>
+      <div class="spacer"></div>
+      <div class="branch-dot"></div>
+      <div class="card">
+        <div class="card-label">Línea 06</div>
+        <div class="card-title">Eventos magnos</div>
+        <div class="card-desc">Participación en grandes escenarios estatales y ecosistemas de innovación de alcance nacional e internacional.</div>
+        <div class="sub-branches">
+          <div class="sub-branch"><span><strong>Gemini Academy</strong> · ITESO + virtual</span><span class="sub-num">1,792</span></div>
+          <div class="sub-branch"><span><strong>Curso de Verano Gemini</strong> · Alfa Digital</span><span class="sub-num">500</span></div>
+          <div class="sub-branch"><span><strong>Jalisco Aprende Festival Educativo</strong></span><span class="sub-num">—</span></div>
+          <div class="sub-branch"><span><strong>Jalisco Academy 2025</strong> · en vivo</span><span class="sub-num">+7,000</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Convergence arrow -->
+    <div class="trunk-arrow">
+      <svg viewBox="0 0 20 20"><path d="M10 18l-8-8h5V2h6v8h5z"/></svg>
+    </div>
+
+    <!-- Convergence node -->
+    <div class="node huge" data-reveal>
+      <div class="node-circle">IMPACTO<br>2025</div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT BLOCK -->
+<section style="padding:0 1rem;">
+  <div class="impact-block" data-reveal>
+    <div class="impact-eyebrow">Impacto digital agregado 2025</div>
+    <div class="impact-big">107,464</div>
+    <div class="impact-label">vistas acumuladas en contenidos formativos de IA y Google Workspace producidos por Alfa Digital</div>
+    <div class="impact-grid">
+      <div class="cell"><div class="n">6,749</div><div class="l">Docentes capacitados presencial</div></div>
+      <div class="cell"><div class="n">+7,000</div><div class="l">En vivo Jalisco Academy</div></div>
+      <div class="cell"><div class="n">68</div><div class="l">Videos y webinars</div></div>
+      <div class="cell"><div class="n">30</div><div class="l">Reels micro</div></div>
+      <div class="cell"><div class="n">32</div><div class="l">Visitas a planteles</div></div>
+      <div class="cell"><div class="n">250</div><div class="l">Certificación Google N1</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BRIDGE -->
+<section class="bridge">
+  <div class="bridge-arrow">▼</div>
+  <div class="bridge-text">«De la estrategia estatal a la ruta que llega a cada región.»</div>
+</section>
+
+<!-- ========== STAGE 2026 ========== -->
+<section class="timeline-section stage-2026">
+  <div class="timeline-header">
+    <div class="timeline-year filled" style="color:var(--orange);">2026</div>
+    <div class="timeline-stage-title" style="color:var(--wine);">Conectar para co-crear</div>
+    <div style="margin-top:1rem;color:var(--gray-med);font-size:1rem;max-width:700px;margin-left:auto;margin-right:auto">Estrategia IA 2026 — Ruta estatal de enseñanza-aprendizaje con Inteligencia Artificial</div>
+  </div>
+
+  <div class="timeline-container">
+    <div class="trunk" style="background:linear-gradient(180deg,var(--orange),var(--wine))"></div>
+
+    <div class="node">
+      <div class="node-circle orange">IA 2026</div>
+    </div>
+
+    <!-- Estrategia 1 -->
+    <div class="branch left" data-reveal>
+      <div class="card">
+        <div class="card-label">Estrategia 01</div>
+        <div class="card-title">Trayecto formativo estatal · 14 regiones</div>
+        <div class="card-desc">En coordinación con la Subsecretaría de Educación Básica y Google Workspace for Education. Capacitación práctica en IA, con sistema de seguimiento y multiplicación.</div>
+        <div class="card-stats">
+          <div class="stat"><div class="stat-num orange">14</div><span class="stat-label">Regiones del estado</span></div>
+          <div class="stat"><div class="stat-num">6,030</div><span class="stat-label">Docentes y ATP</span></div>
+        </div>
+      </div>
+      <div class="branch-dot"></div>
+      <div class="spacer"></div>
+    </div>
+
+    <!-- Estrategia 2 -->
+    <div class="branch right" data-reveal>
+      <div class="spacer"></div>
+      <div class="branch-dot"></div>
+      <div class="card">
+        <div class="card-label">Estrategia 02</div>
+        <div class="card-title">Cursos autogestivos en Jalisco Academy</div>
+        <div class="card-desc">Integración de la oferta formativa de IA al nuevo ecosistema digital de la Secretaría, con rutas a demanda disponibles para toda la comunidad educativa.</div>
+        <div class="card-stats">
+          <div class="stat"><div class="stat-num">MOOC</div><span class="stat-label">Plataforma estatal</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estrategia 3 -->
+    <div class="branch left" data-reveal>
+      <div class="card">
+        <div class="card-label">Estrategia 03</div>
+        <div class="card-title">Curso masivo por convocatoria</div>
+        <div class="card-desc">Trayecto en tiempo real. Cuatro sesiones de una hora. Los docentes finalistas presentan sus proyectos de IA en la final de Academy 2026.</div>
+        <div class="card-stats">
+          <div class="stat"><div class="stat-num orange">+30,000</div><span class="stat-label">Docentes en tiempo real</span></div>
+          <div class="stat"><div class="stat-num">4</div><span class="stat-label">Sesiones de 1 hr</span></div>
+        </div>
+      </div>
+      <div class="branch-dot"></div>
+      <div class="spacer"></div>
+    </div>
+
+    <!-- Estrategia 4 -->
+    <div class="branch right" data-reveal>
+      <div class="spacer"></div>
+      <div class="branch-dot"></div>
+      <div class="card">
+        <div class="card-label">Estrategia 04</div>
+        <div class="card-title">Directivos y supervisores de secundaria</div>
+        <div class="card-desc">Programa intensivo de tres días para quienes lideran el acompañamiento pedagógico en las escuelas secundarias del estado.</div>
+        <div class="card-stats">
+          <div class="stat"><div class="stat-num">3 días</div><span class="stat-label">Intensivo</span></div>
+          <div class="stat"><div class="stat-num orange">Secundaria</div><span class="stat-label">Nivel objetivo</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estrategia 5 -->
+    <div class="branch left" data-reveal>
+      <div class="card">
+        <div class="card-label">Estrategia 05</div>
+        <div class="card-title">Gemini Academy 2026 en las 14 regiones</div>
+        <div class="card-desc">Despliegue regional dirigido a directivos y supervisores, asegurando que la conducción escolar comprenda y aproveche el potencial de la IA en la gestión educativa.</div>
+        <div class="card-stats">
+          <div class="stat"><div class="stat-num orange">14</div><span class="stat-label">Regiones</span></div>
+          <div class="stat"><div class="stat-num">Directivos</div><span class="stat-label">Audiencia objetivo</span></div>
+        </div>
+      </div>
+      <div class="branch-dot"></div>
+      <div class="spacer"></div>
+    </div>
+
+    <div class="trunk-arrow">
+      <svg viewBox="0 0 20 20"><path d="M10 18l-8-8h5V2h6v8h5z"/></svg>
+    </div>
+
+    <div class="node huge" data-reveal>
+      <div class="node-circle orange" style="background:linear-gradient(135deg,var(--orange),var(--wine))">META<br>2026</div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing">
+  <div class="closing-quote">
+    «Colocamos la vida al centro para co-crear, junto con la Inteligencia Artificial, una educación que transforme la realidad de Jalisco.»
+  </div>
+  <div class="closing-signature">
+    <strong>Emmanuel Elizondo Hernández</strong>
+    Dirección de Alfabetización Digital<br>
+    Dirección de Programas Estratégicos · Secretaría de Educación Jalisco<br>
+    <em style="color:var(--orange)">Enero 2026</em>
+  </div>
+</section>
+
+<div class="watermark">ALFA DIGITAL · SEJ</div>
+
+<script>
+// Reveal on scroll
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+
+// Animate numbers on reveal
+const animateNumber = (el) => {
+  const target = el.textContent.replace(/[^\d]/g,'');
+  if (!target) return;
+  const isPlus = el.textContent.includes('+');
+  const hasComma = parseInt(target) >= 1000;
+  const final = parseInt(target);
+  const duration = 1500;
+  const start = performance.now();
+  const initial = el.textContent;
+  function step(now){
+    const p = Math.min((now - start) / duration, 1);
+    const val = Math.floor(final * (0.3 + 0.7 * (1 - Math.pow(1-p,3))));
+    el.textContent = (isPlus ? '+' : '') + (hasComma ? val.toLocaleString('es-MX') : val);
+    if (p < 1) requestAnimationFrame(step);
+    else el.textContent = initial;
+  }
+  requestAnimationFrame(step);
+};
+
+const numIo = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const nums = e.target.querySelectorAll('.stat-num, .sub-num, .impact-big, .impact-grid .n');
+      nums.forEach(n => { if (/\d/.test(n.textContent)) animateNumber(n); });
+      numIo.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.branch, .impact-block').forEach(el => numIo.observe(el));
+</script>
+
+</body>
+</html>
